@@ -24,5 +24,12 @@
 		/// Navigation property: all checkouts associated with this holder.
 		/// </summary>
 		public ICollection<PuzzleCheckout> PuzzleCheckouts { get; set; } = [];
+
+		/// <summary>
+		/// Foreign Key to Identity User
+		/// </summary>
+		public string UserId { get; set; } = default!;
+
+
 	}
 }

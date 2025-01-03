@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.EntityFrameworkCore;
 // The Microsoft.EntityFrameworkCore namespace contains the core functionalities 
 // for building data models, configuring DbContexts, and performing database operations 
 // in Entity Framework Core.
@@ -63,6 +64,30 @@ namespace PuzzleManager.Data
 			// Additional Fluent API configurations go here if needed.
 			// Essentially, Fluent API is a powerful alternative or complement to data annotations,
 			// giving you full control over your entity-to-database mappings in EF Core.
+
+			// Configure the relationship between PuzzleHolder and IdentityUser via UserId, to avoid introducing framework-specific classes into your domain layer.
+			modelBuilder.Entity<PuzzleHolder>()
+				.HasOne<IdentityUser>() // No navigation property in PuzzleHolder
+				.WithMany() // IdentityUser can have multiple PuzzleHolders if desired
+				.HasForeignKey(ph => ph.UserId)
+				.IsRequired()
+				.OnDelete(DeleteBehavior.Cascade);
+
+			// Configure PuzzleCheckout relationships
+			modelBuilder.Entity<PuzzleCheckout>()
+				.HasOne(pc => pc.Puzzle)
+				.WithMany(p => p.PuzzleCheckouts)
+				.HasForeignKey(pc => pc.PuzzleId)
+				.IsRequired()
+				.OnDelete(DeleteBehavior.Cascade);
+
+			modelBuilder.Entity<PuzzleCheckout>()
+				.HasOne(pc => pc.PuzzleHolder)
+				.WithMany(ph => ph.PuzzleCheckouts)
+				.HasForeignKey(pc => pc.PuzzleHolderId)
+				.IsRequired()
+				.OnDelete(DeleteBehavior.Cascade);
+
 		}
 	}
 }
