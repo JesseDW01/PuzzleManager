@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuzzleManager.Data", "Puzzl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuzzleManager.BlazorServer", "PuzzleManager.BlazorServer\PuzzleManager.BlazorServer.csproj", "{76CE2DD5-BBF7-4292-BD54-5B1E1A6A3510}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuzzleManager.Services", "PuzzleManager.Services\PuzzleManager.Services.csproj", "{C75B8F54-B076-4596-826E-F81FB8668D0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuzzleManager.Tests", "PuzzleManager.Tests\PuzzleManager.Tests.csproj", "{9E3A356F-299B-40B6-9780-CF063D9E1D70}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{76CE2DD5-BBF7-4292-BD54-5B1E1A6A3510}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76CE2DD5-BBF7-4292-BD54-5B1E1A6A3510}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76CE2DD5-BBF7-4292-BD54-5B1E1A6A3510}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C75B8F54-B076-4596-826E-F81FB8668D0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C75B8F54-B076-4596-826E-F81FB8668D0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C75B8F54-B076-4596-826E-F81FB8668D0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C75B8F54-B076-4596-826E-F81FB8668D0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E3A356F-299B-40B6-9780-CF063D9E1D70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E3A356F-299B-40B6-9780-CF063D9E1D70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E3A356F-299B-40B6-9780-CF063D9E1D70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E3A356F-299B-40B6-9780-CF063D9E1D70}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
