@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PuzzleManager.Data\PuzzleManager.Data.csproj" />
+    <ProjectReference Include="..\PuzzleManager.Services\PuzzleManager.Services.csproj" />
   </ItemGroup>
 
 </Project>
