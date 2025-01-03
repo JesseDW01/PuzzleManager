@@ -14,14 +14,17 @@ namespace PuzzleManager.Data
 	/// our domain model and the underlying database. It inherits from DbContext 
 	/// (part of EF Core) and manages querying, saving, and configuring the model.
 	/// </summary>
-	/// <remarks>
-	/// The constructor takes DbContextOptions, which includes configuration data 
-	/// (like the connection string). Passing it up to the base DbContext class 
-	/// allows EF Core to know how to connect to and manage the database.
-	/// </remarks>
-	/// <param name="options">The options to configure the context, including connection info.</param>
-	public class PuzzleManagerContext(DbContextOptions<PuzzleManagerContext> options) : DbContext(options)
+	public class PuzzleManagerContext : DbContext
 	{
+		/// <summary>
+		/// The constructor takes DbContextOptions, which includes configuration data 
+		/// (like the connection string). Passing it up to the base DbContext class 
+		/// allows EF Core to know how to connect to and manage the database.
+		/// </summary>
+		/// <param name="options">The options to configure the context, including connection info.</param>
+		public PuzzleManagerContext(DbContextOptions options) : base(options)
+		{
+		}
 
 		/// <summary>
 		/// Each DbSet property represents a table in the database. 

@@ -76,11 +76,9 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSe
 
 // Register your puzzle data DbContext (PuzzleManagerContext) using the same or a different
 // connection string, depending on whether you want them in the same database or separate.
-var puzzleConnectionString = builder.Configuration.GetConnectionString("PuzzleManagerDb")
-	?? throw new InvalidOperationException("Connection string 'PuzzleManagerDb' not found.");
 
 builder.Services.AddDbContext<PuzzleManagerContext>(options =>
-	options.UseSqlServer(puzzleConnectionString));
+	options.UseSqlServer(connectionString)); // We are reusing the same connection string here, since the puzzle data is in the same database.
 
 // ----------------------------------
 // 3. Build the application

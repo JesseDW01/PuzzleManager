@@ -1,0 +1,38 @@
+﻿@page "/puzzles"
+@using Microsoft.EntityFrameworkCore
+@using PuzzleManager.Data
+@using PuzzleManager.Domain
+@inject PuzzleManagerContext Db
+
+<h3>Manage Puzzles</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>PieceCount</th>
+            <th>Maker</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var puzzle in puzzles)
+        {
+            <tr>
+                <td>@puzzle.Name</td>
+                <td>@puzzle.PieceCount</td>
+                <td>@puzzle.Maker?.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<Puzzle> puzzles = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        puzzles = await Db.Puzzles
+            .Include(p => p.Maker)
+            .ToListAsync();
+    }
+}
