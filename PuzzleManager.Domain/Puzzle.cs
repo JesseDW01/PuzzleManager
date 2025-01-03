@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace PuzzleManager.Domain
+﻿namespace PuzzleManager.Domain
 {
 	/// <summary>
 	/// Represents a jigsaw puzzle in the puzzle management system.
@@ -35,11 +33,13 @@ namespace PuzzleManager.Domain
 		/// <summary>
 		/// Navigation property to the puzzle maker.
 		/// </summary>
-		public PuzzleMaker? Maker { get; set; }
+		public PuzzleMaker Maker { get; set; } = default!;
 
 		/// <summary>
 		/// Navigation property: all the checkouts that have happened for this puzzle.
 		/// </summary>
-		public List<PuzzleCheckout>? PuzzleCheckouts { get; set; }
+		public ICollection<PuzzleCheckout> PuzzleCheckouts { get; set; } = [];
+
+
 	}
 }

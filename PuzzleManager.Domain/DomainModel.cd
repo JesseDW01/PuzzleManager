@@ -1,32 +1,48 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="PuzzleManager.Domain.Puzzle">
-    <Position X="1.5" Y="1" Width="1.5" />
+    <Position X="2" Y="1" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAABAIAAAAAAAAAAAQAAAAAAAQABAAACAAAAgA=</HashCode>
       <FileName>Puzzle.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Maker" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="PuzzleCheckouts" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="PuzzleManager.Domain.PuzzleHolder">
-    <Position X="8.25" Y="1" Width="1.5" />
+    <Position X="9.5" Y="1" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAQCAAAAAQAAAAAAAAAAAAAAAAAAgA=</HashCode>
       <FileName>PuzzleHolder.cs</FileName>
     </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="PuzzleCheckouts" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="PuzzleManager.Domain.PuzzleMaker">
-    <Position X="6" Y="1" Width="1.5" />
+    <Position X="9.5" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAIAAAQAAAAAAAABAAA=</HashCode>
       <FileName>PuzzleMaker.cs</FileName>
     </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Puzzles" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="PuzzleManager.Domain.PuzzleCheckout">
-    <Position X="3.75" Y="1" Width="1.5" />
+    <Position X="5.75" Y="1" Width="1.5" />
     <TypeIdentifier>
       <HashCode>BACICAAAAAAAAAAQAAAAAACAAAAAAAIABAAgAAAAAAA=</HashCode>
       <FileName>PuzzleCheckout.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PuzzleHolder" />
+      <Property Name="Puzzle" />
+    </ShowAsAssociation>
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

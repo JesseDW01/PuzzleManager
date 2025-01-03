@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace PuzzleManager.Domain
+﻿namespace PuzzleManager.Domain
 {
 	/// <summary>
 	/// Represents the record of a puzzle being checked out by a puzzle holder.
@@ -18,19 +16,10 @@ namespace PuzzleManager.Domain
 		public int PuzzleId { get; set; }
 
 		/// <summary>
-		/// Navigation property to the puzzle that was checked out.
-		/// </summary>
-		public Puzzle? Puzzle { get; set; }
-
-		/// <summary>
 		/// Foreign key to the holder (family member or friend) checking out the puzzle.
 		/// </summary>
 		public int PuzzleHolderId { get; set; }
 
-		/// <summary>
-		/// Navigation property to the puzzle holder who checked out the puzzle.
-		/// </summary>
-		public PuzzleHolder? PuzzleHolder { get; set; }
 
 		/// <summary>
 		/// The date/time the puzzle was checked out.
@@ -52,5 +41,12 @@ namespace PuzzleManager.Domain
 		/// Optional user feedback on difficulty, which might differ from the puzzle's overall difficulty rating.
 		/// </summary>
 		public double? UserDifficultyRating { get; set; }
+
+		/// <summary>
+		/// Navigation property to the puzzle holder who checked out the puzzle.
+		/// </summary>
+		public PuzzleHolder PuzzleHolder { get; set; } = default!;
+
+		public Puzzle Puzzle { get; set; } = default!;
 	}
 }

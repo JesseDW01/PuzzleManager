@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace PuzzleManager.Domain
+﻿namespace PuzzleManager.Domain
 {
 	/// <summary>
 	/// Represents a family member or friend who can check puzzles in and out.
@@ -25,6 +23,6 @@ namespace PuzzleManager.Domain
 		/// <summary>
 		/// Navigation property: all checkouts associated with this holder.
 		/// </summary>
-		public List<PuzzleCheckout>? PuzzleCheckouts { get; set; }
+		public ICollection<PuzzleCheckout> PuzzleCheckouts { get; set; } = [];
 	}
 }

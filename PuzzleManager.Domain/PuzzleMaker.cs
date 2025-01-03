@@ -25,6 +25,6 @@ namespace PuzzleManager.Domain
 		/// <summary>
 		/// Navigation property: the puzzles made by this maker.
 		/// </summary>
-		public List<Puzzle>? Puzzles { get; set; }
+		public ICollection<Puzzle>? Puzzles { get; set; }
 	}
 }
