@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
+﻿
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 // The Microsoft.EntityFrameworkCore namespace contains the core functionalities 
 // for building data models, configuring DbContexts, and performing database operations 
