@@ -12,9 +12,11 @@ namespace PuzzleManager.Services.DTOs
 		public int PieceCount { get; set; }
 		public int articleNumber { get; set; }
 		public string? Artist { get; set; }
-		public int? year { get; set; }	
+		public int? year { get; set; }
 		public string? ImageUrl { get; set; }
 		public string? ProductUrl { get; set; }
+
+		public readonly string Maker = "Jan van Haasteren";
 
 		// ... other fields you might parse (e.g., description, release date)
 	}

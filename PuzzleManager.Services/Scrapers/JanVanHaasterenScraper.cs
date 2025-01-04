@@ -1,14 +1,15 @@
 ﻿using System.Net.Http;
 using HtmlAgilityPack;
 using PuzzleManager.Services.DTOs;
+using PuzzleManager.Services.Interfaces;
 
-namespace PuzzleManager.Services
+namespace PuzzleManager.Services.Scrapers
 {
 	public class JanVanHaasterenScraper : IPuzzleScraper
 	{
 		private readonly HttpClient _httpClient;
 
-		public JanVanHaasterenScraper(HttpClient httpClient) 
+		public JanVanHaasterenScraper(HttpClient httpClient)
 		{
 			_httpClient = httpClient;
 		}

@@ -16,12 +16,17 @@
 		public string Name { get; set; } = default!;
 
 		/// <summary>
+		/// The more elaborate description or full title of the puzzle.
+		/// </summary>
+		public string Description { get; set; } = default!;
+
+		/// <summary>
 		/// The total number of pieces for this puzzle.
 		/// </summary>
 		public int PieceCount { get; set; }
 
 		/// <summary>
-		/// An overall rating of difficulty (e.g. from 1-5).
+		/// An overall rating of difficulty (e.g., from 1-5).
 		/// </summary>
 		public double DifficultyRating { get; set; }
 
@@ -38,8 +43,31 @@
 		/// <summary>
 		/// Navigation property: all the checkouts that have happened for this puzzle.
 		/// </summary>
-		public ICollection<PuzzleCheckout> PuzzleCheckouts { get; set; } = [];
+		public ICollection<PuzzleCheckout> PuzzleCheckouts { get; set; } = new List<PuzzleCheckout>();
 
+		/// <summary>
+		/// URL to the product page of the puzzle.
+		/// </summary>
+		public string ProductUrl { get; set; } = default!;
 
+		/// <summary>
+		/// URL to the image of the puzzle.
+		/// </summary>
+		public string ImageUrl { get; set; } = default!;
+
+		/// <summary>
+		/// Article number of the puzzle.
+		/// </summary>
+		public int ArticleNumber { get; set; }
+
+		/// <summary>
+		/// Year the puzzle was released.
+		/// </summary>
+		public int Year { get; set; }
+
+		/// <summary>
+		/// The artist or designer of the puzzle.
+		/// </summary>
+		public string Artist { get; set; } = default!;
 	}
 }

@@ -5,6 +5,10 @@ using PuzzleManager.BlazorServer.Components.Account;
 using PuzzleManager.BlazorServer.Components;
 using PuzzleManager.BlazorServer.Data;
 using PuzzleManager.Data;
+using PuzzleManager.Services.Scrapers;
+using PuzzleManager.Services.ImportServices;
+using PuzzleManager.Services.Interfaces;
+using PuzzleManager.Services.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -79,6 +83,12 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSe
 
 builder.Services.AddDbContext<PuzzleManagerContext>(options =>
 	options.UseSqlServer(connectionString)); // We are reusing the same connection string here, since the puzzle data is in the same database.
+
+
+builder.Services.AddAutoMapper(typeof(PuzzleMappingProfile));
+builder.Services.AddScoped<IPuzzleImportService, PuzzleImportService>();
+builder.Services.AddScoped<IPuzzleScraper, JanVanHaasterenScraper>();
+builder.Services.AddHttpClient<IPuzzleScraper, JanVanHaasterenScraper>();
 
 // ----------------------------------
 // 3. Build the application
