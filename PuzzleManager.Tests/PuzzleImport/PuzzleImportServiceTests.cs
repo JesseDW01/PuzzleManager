@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using PuzzleManager.Data;
-using PuzzleManager.Domain;
+using PuzzleManager.Domain.Entities;
 using PuzzleManager.Services.DTOs;
 using PuzzleManager.Services.ImportServices;
 using PuzzleManager.Services.Interfaces;
@@ -17,7 +17,7 @@ namespace PuzzleManager.Tests.PuzzleImport
 		public PuzzleImportServiceTests()
 		{
 			// Initialize AutoMapper configuration
-			var config = new MapperConfiguration(cfg =>
+			MapperConfiguration config = new(cfg =>
 			{
 				cfg.AddProfile<PuzzleMappingProfile>();
 			});
@@ -46,9 +46,9 @@ namespace PuzzleManager.Tests.PuzzleImport
 		public async Task ImportPuzzleByUrlAsync_ShouldAddPuzzleAndCheckout_WhenPuzzleDoesNotExist()
 		{
 			// Arrange
-			var mockScraper = new Mock<IPuzzleScraper>();
-			var puzzleUrl = "https://janvanhaasteren.nl/puzzel/test-puzzle/";
-			var testDto = new JVHOnlinePuzzleDto
+			Mock<IPuzzleScraper> mockScraper = new();
+			string puzzleUrl = "https://janvanhaasteren.nl/puzzel/test-puzzle/";
+			JVHOnlinePuzzleDto testDto = new()
 			{
 				Title = "Test Puzzle",
 				FullTitle = "Jan van Haasteren – Test Puzzle – 1000 stukjes puzzel",
@@ -64,14 +64,14 @@ namespace PuzzleManager.Tests.PuzzleImport
 					   .ReturnsAsync(testDto);
 
 			// Setup in-memory database
-			var options = new DbContextOptionsBuilder<PuzzleManagerContext>()
+			DbContextOptions<PuzzleManagerContext> options = new DbContextOptionsBuilder<PuzzleManagerContext>()
 				.UseInMemoryDatabase(databaseName: "ImportPuzzle_Success")
 				.Options;
 
-			using var context = new PuzzleManagerContext(options);
+			using PuzzleManagerContext context = new(options);
 
 			// Create a test user
-			var testUser = new IdentityUser
+			IdentityUser testUser = new()
 			{
 				Id = "user-123",
 				UserName = "testuser",
@@ -79,31 +79,44 @@ namespace PuzzleManager.Tests.PuzzleImport
 			};
 
 			// Initialize the service
-			var service = new PuzzleImportService(mockScraper.Object, context, _mapper);
+			PuzzleImportService service = new(mockScraper.Object, context, _mapper);
 
 			// Act
-			Puzzle? result = await service.ImportPuzzleByUrlAsync(puzzleUrl, testUser);
+			Puzzle? puzzle = await service.ImportPuzzleByUrlAsync(puzzleUrl, testUser);
 
 			// Assert
-			Assert.NotNull(result);
-			Assert.Equal(testDto.Title, result.Name);
-			Assert.Equal(testDto.PieceCount, result.PieceCount);
-			Assert.Equal(testDto.ProductUrl, result.ProductUrl);
+			Assert.NotNull(puzzle);
+			Assert.Equal(testDto.Title, puzzle.Name);
+			Assert.Equal(testDto.PieceCount, puzzle.PieceCount);
+			Assert.Equal(testDto.ProductUrl, puzzle.ProductUrl);
+			Assert.Equal(testDto.ImageUrl, puzzle.ImageUrl);
+			Assert.Equal(testDto.Year, puzzle.Year);
+			Assert.Equal(testDto.ArticleNumber, puzzle.ArticleNumber);
+			Assert.Equal(testDto.Artist, puzzle.Artist);
 
-			// Verify PuzzleHolder was created
-			var holder = await context.PuzzleHolders.FirstOrDefaultAsync(h => h.UserId == testUser.Id);
-			Assert.NotNull(holder);
-			Assert.Equal(testUser.UserName, holder.Name);
-
-			// Verify PuzzleCheckout was created
-			var checkout = await context.PuzzleCheckouts.FirstOrDefaultAsync(c => c.PuzzleHolderId == holder.PuzzleHolderId && c.PuzzleId == result.PuzzleId);
-			Assert.NotNull(checkout);
-			Assert.Equal(DateTime.UtcNow.Date, checkout.CheckoutDate.Date);
-
-			// Verify Maker was created
-			var Maker = await context.PuzzleMakers.FirstOrDefaultAsync(m => m.PuzzleMakerId == result.PuzzleMakerId);
+			// Verify Maker was created and linked
+			PuzzleMaker? Maker = await context.PuzzleMakers.FirstOrDefaultAsync(m => m.PuzzleMakerId == puzzle.PuzzleMakerId);
 			Assert.NotNull(Maker);
 			Assert.Equal(Maker.Name, testDto.Maker);
+			Assert.Equal(puzzle.PuzzleMakerId, Maker.PuzzleMakerId);
+			Assert.Contains(puzzle, Maker.Puzzles);
+
+			// Verify PuzzleCheckout was created and linked
+			PuzzleCheckout? checkout = await context.PuzzleCheckouts.FirstOrDefaultAsync(c => c.PuzzleId == puzzle.PuzzleId);
+			Assert.NotNull(checkout);
+			Assert.Equal(DateTime.UtcNow.Date, checkout.CheckoutDate.Date);
+			Assert.Equal(puzzle.PuzzleId, checkout.PuzzleId);
+			Assert.Equal(puzzle, checkout.Puzzle);
+			Assert.Contains(checkout, puzzle.PuzzleCheckouts);
+
+			// Verify PuzzleHolder was created and linked
+			PuzzleHolder? holder = await context.PuzzleHolders.FirstOrDefaultAsync(h => h.UserId == testUser.Id);
+			Assert.NotNull(holder);
+			Assert.Equal(testUser.UserName, holder.Name);
+			Assert.Equal(holder.PuzzleHolderId, checkout.PuzzleHolderId);
+			Assert.Equal(holder, checkout.PuzzleHolder);
+			Assert.Contains(checkout, holder.PuzzleCheckouts);
+
 		}
 
 		/// <summary>
@@ -114,9 +127,9 @@ namespace PuzzleManager.Tests.PuzzleImport
 		public async Task ImportPuzzleByUrlAsync_ShouldThrowException_WhenPuzzleAlreadyExists()
 		{
 			// Arrange
-			var mockScraper = new Mock<IPuzzleScraper>();
-			var puzzleUrl = "https://janvanhaasteren.nl/puzzel/existing-puzzle/";
-			var testDto = new JVHOnlinePuzzleDto
+			Mock<IPuzzleScraper> mockScraper = new();
+			string puzzleUrl = "https://janvanhaasteren.nl/puzzel/existing-puzzle/";
+			JVHOnlinePuzzleDto testDto = new()
 			{
 				Title = "Existing Puzzle",
 				FullTitle = "Jan van Haasteren – Existing Puzzle – 1500 stukjes puzzel",
@@ -132,14 +145,14 @@ namespace PuzzleManager.Tests.PuzzleImport
 					   .ReturnsAsync(testDto);
 
 			// Setup in-memory database with existing puzzle
-			var options = new DbContextOptionsBuilder<PuzzleManagerContext>()
+			DbContextOptions<PuzzleManagerContext> options = new DbContextOptionsBuilder<PuzzleManagerContext>()
 				.UseInMemoryDatabase(databaseName: "ImportPuzzle_Exception")
 				.Options;
 
-			using var context = new PuzzleManagerContext(options);
+			using PuzzleManagerContext context = new(options);
 
 			// Add existing puzzle
-			var existingPuzzle = new Puzzle
+			Puzzle existingPuzzle = new()
 			{
 				PuzzleId = 1,
 				Name = testDto.Title,
@@ -157,7 +170,7 @@ namespace PuzzleManager.Tests.PuzzleImport
 			await context.SaveChangesAsync();
 
 			// Create a test user
-			var testUser = new IdentityUser
+			IdentityUser testUser = new()
 			{
 				Id = "user-456",
 				UserName = "anotheruser",
@@ -165,10 +178,10 @@ namespace PuzzleManager.Tests.PuzzleImport
 			};
 
 			// Initialize the service
-			var service = new PuzzleImportService(mockScraper.Object, context, _mapper);
+			PuzzleImportService service = new(mockScraper.Object, context, _mapper);
 
 			// Act & Assert
-			var exception = await Assert.ThrowsAsync<Exception>(() => service.ImportPuzzleByUrlAsync(puzzleUrl, testUser));
+			Exception exception = await Assert.ThrowsAsync<Exception>(() => service.ImportPuzzleByUrlAsync(puzzleUrl, testUser));
 			Assert.Equal("Puzzle already exists in the database.", exception.Message);
 		}
 	}
