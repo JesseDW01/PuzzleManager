@@ -1,4 +1,4 @@
-﻿namespace PuzzleManager.Domain
+﻿namespace PuzzleManager.Domain.Entities
 {
 	/// <summary>
 	/// Represents a jigsaw puzzle in the puzzle management system.

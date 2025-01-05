@@ -1,6 +1,6 @@
 ﻿using PuzzleManager.Services.DTOs;
-using PuzzleManager.Domain;
 using Microsoft.AspNetCore.Identity;
+using PuzzleManager.Domain.Entities;
 
 namespace PuzzleManager.Services.Interfaces
 {

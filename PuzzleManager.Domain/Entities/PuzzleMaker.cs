@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PuzzleManager.Domain
+namespace PuzzleManager.Domain.Entities
 {
 	/// <summary>
 	/// Represents the company or individual who made the puzzle.
@@ -25,6 +25,6 @@ namespace PuzzleManager.Domain
 		/// <summary>
 		/// Navigation property: the puzzles made by this maker.
 		/// </summary>
-		public ICollection<Puzzle>? Puzzles { get; set; }
+		public ICollection<Puzzle> Puzzles { get; set; } = [];
 	}
 }

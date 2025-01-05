@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 // for building data models, configuring DbContexts, and performing database operations 
 // in Entity Framework Core.
 
-using PuzzleManager.Domain;
+using PuzzleManager.Domain.Entities;
 // "PuzzleManager.Domain" is where our entity classes (Puzzle, PuzzleMaker, etc.) are defined.
 // This context class needs to reference them so EF Core knows how to map them to database tables.
 
@@ -16,17 +16,14 @@ namespace PuzzleManager.Data
 	/// our domain model and the underlying database. It inherits from DbContext 
 	/// (part of EF Core) and manages querying, saving, and configuring the model.
 	/// </summary>
-	public class PuzzleManagerContext : DbContext
+	/// <remarks>
+	/// The constructor takes DbContextOptions, which includes configuration data 
+	/// (like the connection string). Passing it up to the base DbContext class 
+	/// allows EF Core to know how to connect to and manage the database.
+	/// </remarks>
+	/// <param name="options">The options to configure the context, including connection info.</param>
+	public class PuzzleManagerContext(DbContextOptions options) : DbContext(options)
 	{
-		/// <summary>
-		/// The constructor takes DbContextOptions, which includes configuration data 
-		/// (like the connection string). Passing it up to the base DbContext class 
-		/// allows EF Core to know how to connect to and manage the database.
-		/// </summary>
-		/// <param name="options">The options to configure the context, including connection info.</param>
-		public PuzzleManagerContext(DbContextOptions options) : base(options)
-		{
-		}
 
 		/// <summary>
 		/// Each DbSet property represents a table in the database. 

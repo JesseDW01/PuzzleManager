@@ -1,4 +1,4 @@
-﻿namespace PuzzleManager.Domain
+﻿namespace PuzzleManager.Domain.Entities
 {
 	/// <summary>
 	/// Represents a family member or friend who can check puzzles in and out.

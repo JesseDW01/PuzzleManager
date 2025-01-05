@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using PuzzleManager.Domain;
+using PuzzleManager.Domain.Entities;
 using PuzzleManager.Services.DTOs;
 
 namespace PuzzleManager.Services.Mappings

@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="PuzzleManager.Domain.Puzzle">
-    <Position X="2" Y="1" Width="1.5" />
+  <Class Name="PuzzleManager.Domain.Entities.Puzzle">
+    <Position X="0.5" Y="2.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAQAAABAIggAQAAAAAAAQAAIAAAAQQBAAACAAAAgA=</HashCode>
-      <FileName>Puzzle.cs</FileName>
+      <FileName>Entities\Puzzle.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Maker" />
@@ -13,36 +13,36 @@
       <Property Name="PuzzleCheckouts" />
     </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="PuzzleManager.Domain.PuzzleHolder">
-    <Position X="9.5" Y="1" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAQCAAAAAwAAAAAAAAAAAAAAAAAAgA=</HashCode>
-      <FileName>PuzzleHolder.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsCollectionAssociation>
-      <Property Name="PuzzleCheckouts" />
-    </ShowAsCollectionAssociation>
-  </Class>
-  <Class Name="PuzzleManager.Domain.PuzzleMaker">
-    <Position X="9.5" Y="3.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAIAAAQAAAAAAAABAAA=</HashCode>
-      <FileName>PuzzleMaker.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsCollectionAssociation>
-      <Property Name="Puzzles" />
-    </ShowAsCollectionAssociation>
-  </Class>
-  <Class Name="PuzzleManager.Domain.PuzzleCheckout">
-    <Position X="5.75" Y="1" Width="1.5" />
+  <Class Name="PuzzleManager.Domain.Entities.PuzzleCheckout">
+    <Position X="3.75" Y="1.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>BACICAAAAAAAAAAQAAAAAACAAAAAAAIABAAgAAAAAAA=</HashCode>
-      <FileName>PuzzleCheckout.cs</FileName>
+      <FileName>Entities\PuzzleCheckout.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="PuzzleHolder" />
       <Property Name="Puzzle" />
     </ShowAsAssociation>
+  </Class>
+  <Class Name="PuzzleManager.Domain.Entities.PuzzleHolder">
+    <Position X="6.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQCAAAAAwAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Entities\PuzzleHolder.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="PuzzleCheckouts" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="PuzzleManager.Domain.Entities.PuzzleMaker">
+    <Position X="4.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAIAAAQAAAAAAAABAAA=</HashCode>
+      <FileName>Entities\PuzzleMaker.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Puzzles" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

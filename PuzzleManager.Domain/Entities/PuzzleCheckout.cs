@@ -1,4 +1,4 @@
-﻿namespace PuzzleManager.Domain
+﻿namespace PuzzleManager.Domain.Entities
 {
 	/// <summary>
 	/// Represents the record of a puzzle being checked out by a puzzle holder.
