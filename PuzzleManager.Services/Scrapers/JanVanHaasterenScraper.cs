@@ -125,8 +125,8 @@ namespace PuzzleManager.Services.Scrapers
 				ProductUrl = puzzleUrl,
 				ImageUrl = imageUrl,
 				Artist = tekenaar,
-				year = int.TryParse(jaar, out int year) ? year : 0,
-				articleNumber = int.TryParse(artikelnr, out int articleNumber) ? articleNumber : 0,
+				Year = int.TryParse(jaar, out int year) ? year : 0,
+				ArticleNumber = int.TryParse(artikelnr, out int articleNumber) ? articleNumber : 0,
 			};
 
 			return puzzleDto;

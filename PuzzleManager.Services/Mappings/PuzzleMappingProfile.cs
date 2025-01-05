@@ -18,10 +18,17 @@ namespace PuzzleManager.Services.Mappings
 				.ForMember(dest => dest.PieceCount, opt => opt.MapFrom(src => src.PieceCount))
 				.ForMember(dest => dest.ProductUrl, opt => opt.MapFrom(src => src.ProductUrl))
 				.ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.ImageUrl))
-				.ForMember(dest => dest.Year, opt => opt.MapFrom(src => src.year))
-				.ForMember(dest => dest.ArticleNumber, opt => opt.MapFrom(src => src.articleNumber))
-				// PuzzleMakerId will be set in the service after ensuring the maker exists
-				.ForMember(dest => dest.PuzzleMakerId, opt => opt.MapFrom(src => src.Maker));
+				.ForMember(dest => dest.Year, opt => opt.MapFrom(src => src.Year))
+				.ForMember(dest => dest.ArticleNumber, opt => opt.MapFrom(src => src.ArticleNumber))
+
+				// Ignore following proprties as tyet will be assigned trough services surrounding
+				.ForMember(dest => dest.PuzzleId, opt => opt.Ignore())
+				.ForMember(dest => dest.PuzzleMakerId, opt => opt.Ignore())
+				.ForMember(dest => dest.Maker, opt => opt.Ignore())
+				.ForMember(dest => dest.CheckoutId, opt => opt.Ignore())
+				.ForMember(dest => dest.PuzzleCheckouts, opt => opt.Ignore())
+				.ForMember(dest => dest.DifficultyRating, opt => opt.Ignore())
+				;
 		}
 	}
 }

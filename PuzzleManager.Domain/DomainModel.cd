@@ -3,7 +3,7 @@
   <Class Name="PuzzleManager.Domain.Puzzle">
     <Position X="2" Y="1" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAABAIAAAAAAAAAAAQAAAAAAAQABAAACAAAAgA=</HashCode>
+      <HashCode>AAAAQAAABAIggAQAAAAAAAQAAIAAAAQQBAAACAAAAgA=</HashCode>
       <FileName>Puzzle.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>

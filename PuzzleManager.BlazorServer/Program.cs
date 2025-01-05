@@ -9,6 +9,7 @@ using PuzzleManager.Services.Scrapers;
 using PuzzleManager.Services.ImportServices;
 using PuzzleManager.Services.Interfaces;
 using PuzzleManager.Services.Mappings;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -85,7 +86,12 @@ builder.Services.AddDbContext<PuzzleManagerContext>(options =>
 	options.UseSqlServer(connectionString)); // We are reusing the same connection string here, since the puzzle data is in the same database.
 
 
-builder.Services.AddAutoMapper(typeof(PuzzleMappingProfile));
+builder.Services.AddAutoMapper(cfg =>
+{
+	// add configurations for AutoMapper
+	cfg.AddProfile<PuzzleMappingProfile>();
+}, typeof(PuzzleMappingProfile).Assembly);
+
 builder.Services.AddScoped<IPuzzleImportService, PuzzleImportService>();
 builder.Services.AddScoped<IPuzzleScraper, JanVanHaasterenScraper>();
 builder.Services.AddHttpClient<IPuzzleScraper, JanVanHaasterenScraper>();
@@ -94,6 +100,13 @@ builder.Services.AddHttpClient<IPuzzleScraper, JanVanHaasterenScraper>();
 // 3. Build the application
 // ----------------------------------
 var app = builder.Build();
+
+// Validate AutoMapper configuration
+using (var scope = app.Services.CreateScope())
+{
+	var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
+	mapper.ConfigurationProvider.AssertConfigurationIsValid();
+}
 
 // ----------------------------------
 // 4. Configure the HTTP request pipeline

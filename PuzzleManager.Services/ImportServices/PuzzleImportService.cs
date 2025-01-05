@@ -43,23 +43,24 @@ namespace PuzzleManager.Services.ImportServices
 			}
 
 			// Check if the puzzle already exists in the database to avoid duplicates
-			bool exists = await _context.Puzzles.AnyAsync(p => p.ProductUrl == puzzleDto.ProductUrl);
-			if (exists)
+			Puzzle? existingPuzzle = await _context.Puzzles.FirstOrDefaultAsync(p => p.ProductUrl == puzzleDto.ProductUrl);
+			if (existingPuzzle is not null)
 			{
 				// Puzzle already exists, optionally handle duplicates
-				return null;
+				throw new Exception("Puzzle already exists in the database.");
 			}
 
 			// Map the DTO to the domain Puzzle entity using AutoMapper
 			Puzzle puzzle = _mapper.Map<Puzzle>(puzzleDto);
-
-			// Get or create the PuzzleHolder based on the holderUserId
-			PuzzleHolder holder = await GetOrCreatePuzzleHolderAsync(user);
+			PuzzleMaker maker = await GetOrCreatePuzzleMakerAsync(puzzleDto.Maker);
+			puzzle.Maker = maker;
+			puzzle.PuzzleMakerId = maker.PuzzleMakerId;
 
 			// Add the new puzzle to the context
 			_context.Puzzles.Add(puzzle);
 
 			// Create a new PuzzleCheckout linking the holder to the puzzle
+			PuzzleHolder holder = await GetOrCreatePuzzleHolderAsync(user);
 			PuzzleCheckout checkout = new PuzzleCheckout
 			{
 				Puzzle = puzzle,
@@ -68,6 +69,8 @@ namespace PuzzleManager.Services.ImportServices
 				// Initialize other properties as needed
 			};
 			_context.PuzzleCheckouts.Add(checkout);
+
+			puzzle.CheckoutId = checkout.PuzzleCheckoutId;
 
 			// Save changes to persist the puzzle and checkout in the database
 			await _context.SaveChangesAsync();
@@ -78,14 +81,37 @@ namespace PuzzleManager.Services.ImportServices
 		/// <summary>
 		/// Retrieves an existing PuzzleHolder by userId or creates a new one if not found.
 		/// </summary>
+		/// <param name="maker">The Identity User ID.</param>
+		/// <returns>The existing or newly created PuzzleHolder.</returns>
+		private async Task<PuzzleMaker> GetOrCreatePuzzleMakerAsync(string maker)
+		{
+			// Attempt to find an existing PuzzleHolder linked to the userId
+			PuzzleMaker? puzzleMaker = await _context.PuzzleMakers.FirstOrDefaultAsync(m => m.Name == maker);
+			if (puzzleMaker != null) 
+			{
+				return puzzleMaker;
+			}
+
+			puzzleMaker = new PuzzleMaker
+			{
+				Name = maker
+			};
+
+			_context.PuzzleMakers.Add(puzzleMaker);
+			await _context.SaveChangesAsync(); // Persist to generate PuzzleMakerId
+
+			return puzzleMaker;
+		}
+
+		/// <summary>
+		/// Retrieves an existing PuzzleHolder by userId or creates a new one if not found.
+		/// </summary>
 		/// <param name="userId">The Identity User ID.</param>
 		/// <returns>The existing or newly created PuzzleHolder.</returns>
 		private async Task<PuzzleHolder> GetOrCreatePuzzleHolderAsync(IdentityUser user)
 		{
 			// Attempt to find an existing PuzzleHolder linked to the userId
-			PuzzleHolder? holder = await _context.PuzzleHolders
-				.FirstOrDefaultAsync(h => h.UserId == user.Id);
-
+			PuzzleHolder? holder = await _context.PuzzleHolders.FirstOrDefaultAsync(h => h.UserId == user.Id);
 			if (holder != null)
 			{
 				return holder;

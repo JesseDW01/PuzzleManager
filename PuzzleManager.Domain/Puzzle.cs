@@ -28,7 +28,7 @@
 		/// <summary>
 		/// An overall rating of difficulty (e.g., from 1-5).
 		/// </summary>
-		public double DifficultyRating { get; set; }
+		public double? DifficultyRating { get; set; }
 
 		/// <summary>
 		/// Foreign key reference to the puzzle maker.
@@ -43,7 +43,7 @@
 		/// <summary>
 		/// Navigation property: all the checkouts that have happened for this puzzle.
 		/// </summary>
-		public ICollection<PuzzleCheckout> PuzzleCheckouts { get; set; } = new List<PuzzleCheckout>();
+		public ICollection<PuzzleCheckout> PuzzleCheckouts { get; set; } = [];
 
 		/// <summary>
 		/// URL to the product page of the puzzle.
@@ -68,6 +68,11 @@
 		/// <summary>
 		/// The artist or designer of the puzzle.
 		/// </summary>
-		public string Artist { get; set; } = default!;
+		public string Artist { get; set; }
+
+		/// <summary>
+		/// The current checkout of the puzzle.
+		/// </summary>
+		public int CheckoutId { get; set; }
 	}
 }
