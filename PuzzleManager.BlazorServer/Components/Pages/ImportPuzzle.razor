@@ -1,0 +1,125 @@
+﻿@page "/ImportPuzzle"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@using PuzzleManager.BlazorServer.Data
+@using PuzzleManager.Domain
+@using PuzzleManager.Services.DTOs
+@using PuzzleManager.Services.Interfaces
+@using Microsoft.AspNetCore.Components.Authorization
+@inject IPuzzleImportService PuzzleImportService
+@inject UserManager<ApplicationUser> UserManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize]
+
+<h3>Import Puzzle</h3>
+
+<!-- Search Form -->
+<EditForm Model="searchModel" OnValidSubmit="HandleSearch">
+    <InputText @bind-Value="searchModel.SearchTerm" placeholder="Search puzzles by name or URL" />
+    <button type="submit">Search</button>
+</EditForm>
+
+<!-- Display Search Results -->
+@if (isLoading)
+{
+    <p>Loading...</p>
+}
+else if (searchResults != null && searchResults.Any())
+{
+    <h4>Search Results:</h4>
+    <ul>
+        @foreach (var puzzle in searchResults)
+        {
+            <li>
+                <input type="radio" name="selectedPuzzle" @bind="selectedPuzzleUrl"/>
+                <strong>@puzzle.Title</strong> - @puzzle.PieceCount pieces
+            </li>
+        }
+    </ul>
+    <button @onclick="ImportSelectedPuzzle" disabled="@string.IsNullOrEmpty(selectedPuzzleUrl)">Import Puzzle</button>
+}
+else if (searchPerformed)
+{
+    <p>No puzzles found.</p>
+}
+
+<!-- Success/Error Messages -->
+@if (!string.IsNullOrEmpty(message))
+{
+    <p>@message</p>
+}
+
+@code {
+    // Model for search input
+    private SearchModel searchModel = new SearchModel();
+    
+    // List of search results
+    private List<JVHOnlinePuzzleDto> searchResults;
+    
+    // Selected puzzle URL
+    private string selectedPuzzleUrl;
+    
+    // Loading state
+    private bool isLoading = false;
+    
+    // Indicates if a search has been performed
+    private bool searchPerformed = false;
+    
+    // Message to display success or error
+    private string message;
+
+    /// <summary>
+    /// Handles the search form submission.
+    /// </summary>
+    private async Task HandleSearch()
+    {
+        isLoading = true;
+        message = string.Empty;
+        searchResults = await PuzzleImportService.SearchPuzzlesAsync(searchModel.SearchTerm);
+        isLoading = false;
+        searchPerformed = true;
+    }
+
+    /// <summary>
+    /// Imports the selected puzzle and links it to the current user.
+    /// </summary>
+    private async Task ImportSelectedPuzzle()
+    {
+        if (string.IsNullOrEmpty(selectedPuzzleUrl))
+        {
+            message = "Please select a puzzle to import.";
+            return;
+        }
+
+        // Get the current authentication state
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = await UserManager.GetUserAsync(authState.User);
+        if (user == null)
+        {
+            message = "User not found.";
+            return;
+        }
+
+        // Import the puzzle
+        var importedPuzzle = await PuzzleImportService.ImportPuzzleByUrlAsync(selectedPuzzleUrl, user);
+
+        if (importedPuzzle != null)
+        {
+            message = $"Puzzle '{importedPuzzle.Name}' imported successfully!";
+            // Optionally, refresh search results or reset selection
+            selectedPuzzleUrl = string.Empty;
+        }
+        else
+        {
+            message = "Failed to import puzzle. It may already exist.";
+        }
+    }
+
+    /// <summary>
+    /// Model for search input.
+    /// </summary>
+    public class SearchModel
+    {
+        public string SearchTerm { get; set; } = string.Empty;
+    }
+}
