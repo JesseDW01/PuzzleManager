@@ -1,11 +1,11 @@
 ﻿@page "/ImportPuzzle"
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Components.Authorization
 @using PuzzleManager.BlazorServer.Data
 @using PuzzleManager.Domain
 @using PuzzleManager.Services.DTOs
 @using PuzzleManager.Services.Interfaces
-@using Microsoft.AspNetCore.Components.Authorization
 @inject IPuzzleImportService PuzzleImportService
 @inject UserManager<ApplicationUser> UserManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -15,8 +15,8 @@
 
 <!-- Search Form -->
 <EditForm Model="searchModel" OnValidSubmit="HandleSearch">
-    <InputText @bind-Value="searchModel.SearchTerm" placeholder="Search puzzles by name or URL" />
-    <button type="submit">Search</button>
+    <InputText @bind-Value="searchModel.SearchTerm" placeholder="Search puzzles by name or URL" class="form-control mb-2" />
+    <button type="submit" class="btn btn-primary">Search</button>
 </EditForm>
 
 <!-- Display Search Results -->
@@ -31,12 +31,15 @@ else if (searchResults != null && searchResults.Any())
         @foreach (var puzzle in searchResults)
         {
             <li>
-                <input type="radio" name="selectedPuzzle" @bind="selectedPuzzleUrl"/>
+                <input type="radio" name="selectedPuzzle" @bind="selectedPuzzleUrl" />
                 <strong>@puzzle.Title</strong> - @puzzle.PieceCount pieces
             </li>
         }
     </ul>
-    <button @onclick="ImportSelectedPuzzle" disabled="@string.IsNullOrEmpty(selectedPuzzleUrl)">Import Puzzle</button>
+    <!-- Import Button Outside of EditForm -->
+    <button type="button" @onclick="ImportSelectedPuzzle" disabled="@string.IsNullOrEmpty(selectedPuzzleUrl)" class="btn btn-success">
+        Import Puzzle
+    </button>
 }
 else if (searchPerformed)
 {
@@ -94,6 +97,7 @@ else if (searchPerformed)
         // Get the current authentication state
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = await UserManager.GetUserAsync(authState.User);
+
         if (user == null)
         {
             message = "User not found.";
