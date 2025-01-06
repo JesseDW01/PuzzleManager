@@ -61,3 +61,7 @@ The domain layer consists of the following classes:
    ```bash
    git clone https://github.com/YourUser/PuzzleManager.git //todo update
    ```
+
+## INFO
+
+- https://www.versio.nl/artikelen/10-handige-softwarepaketten-voor-linux
