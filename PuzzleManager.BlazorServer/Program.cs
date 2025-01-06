@@ -85,12 +85,7 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSe
 builder.Services.AddDbContext<PuzzleManagerContext>(options =>
 	options.UseSqlServer(connectionString)); // We are reusing the same connection string here, since the puzzle data is in the same database.
 
-
-builder.Services.AddAutoMapper(cfg =>
-{
-	// add configurations for AutoMapper
-	cfg.AddProfile<PuzzleMappingProfile>();
-}, typeof(PuzzleMappingProfile).Assembly);
+builder.Services.AddAutoMapper(typeof(PuzzleMappingProfile).Assembly);
 
 builder.Services.AddScoped<IPuzzleImportService, PuzzleImportService>();
 builder.Services.AddScoped<IPuzzleScraper, JanVanHaasterenScraper>();
